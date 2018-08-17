@@ -4,7 +4,7 @@ The purpose of this project is to facilitate the deployment and management of a 
 
 ## Getting Started
 
-Security Onion v16.04 introduced a new architecture, and I strongly recommend to read the [Security Onion Wiki](https://github.com/Security-Onion-Solutions/security-onion/wiki) before using these playbooks.
+Security Onion v16.04.4.1 introduced a new architecture, and I strongly recommend to read the [Security Onion Wiki](https://github.com/Security-Onion-Solutions/security-onion/wiki) before using these playbooks.
 
 
 ### Prerequisites
