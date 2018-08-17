@@ -1,0 +1,40 @@
+---
+- name: Copy setup config file locally
+  copy:
+    src: ./roles/securityonion_setup_master/files/sosetup_master.conf
+    dest: /home/amfids/sosetup_master.conf
+    owner: amfids
+
+- name: Add firewall rule to allow port 443 from anywhere
+  ufw:
+    rule: allow
+    port: 443
+    proto: tcp
+
+- name: Add firewall rule to allow port 22,4505,4506,7736 from 192.168.2.0/24
+  ufw:
+    rule: allow
+    port:  '{{ item }}'
+    proto: tcp
+    src: 192.168.2.0/24
+  with_items:
+    - 22
+    - 4505
+    - 4506
+    - 7736
+
+#This is to make sure the setup has not been run before
+- name: Check redis service status
+  service:
+    name: redis
+    state: started
+  register: redis_status
+  no_log: True
+  ignore_errors: True
+
+- name: Launch Security Onion setup
+  shell: sosetup -f /home/amfids/sosetup_master.conf -y
+  register: setup_result
+  when: redis_status is failed
+
+

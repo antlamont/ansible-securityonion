@@ -1,0 +1,15 @@
+[all:vars]
+master_ip=XXX.XXX.XXX.XXX
+
+[forward_nodes]
+
+
+[master]
+
+
+[storage_nodes]
+
+
+
+
+

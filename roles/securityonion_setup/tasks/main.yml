@@ -1,0 +1,20 @@
+---
+- name: Execute setup for master
+  include_role:
+    name: securityonion_setup_master
+  when: "'master' in group_names"
+
+- name: Execute setup for storage node
+  include_role:
+    name: securityonion_setup_storage_node
+  when: "'storage_nodes' in group_names"
+
+- name: Execute setup for forward node
+  include_role:
+    name: securityonion_setup_forward_node
+  when: "'forward_nodes' in group_names"
+
+- name: Execute setup for test sensor
+  include_role:
+    name: securityonion_setup_forward_node
+  when: "'aq-pvc01' in group_names"

@@ -1,0 +1,22 @@
+---
+- name: Install Security Onion updates
+  shell: soup -y
+
+- name: Check if reboot is required
+  stat:
+    path: /var/run/reboot-required
+  register: reboot_required_file
+  
+- name: Reboot the server
+  shell: sleep 2 && shutdown -r now
+  async: 1
+  poll: 0
+  when: reboot_required_file.stat.exists
+  
+- name: Wait for the reboot to complete if there was a change.
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+  when: reboot_required_file.stat.exists

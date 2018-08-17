@@ -1,0 +1,3 @@
+- import_playbook: master.yml
+- import_playbook: forward_nodes.yml
+- import_playbook: storage_nodes.yml

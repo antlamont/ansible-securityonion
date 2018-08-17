@@ -1,0 +1,54 @@
+---
+- name: Copy setup config file locally
+  copy:
+    src: ./roles/securityonion_setup_forward_node/files/sosetup.conf
+    dest: /home/{{ so_ssh_username }}/sosetup.conf
+    owner: '{{ so_ssh_username }}'
+
+- name: Change Master server IP in config file
+  lineinfile:
+    path: /home/{{ so_ssh_username }}/sosetup.conf
+    regexp: '^SERVERNAME='
+    line: "SERVERNAME='{{ master_ip }}'"
+
+- name: Copy setup executable file locally
+  copy:
+    src: ./roles/securityonion_setup_forward_node/files/sosetup
+    dest: /usr/sbin/sosetup
+    owner: '{{ so_ssh_username }}'
+
+- name: Add password to sshpass in sosetup
+  lineinfile:
+    path: /usr/sbin/sosetup
+    regexp: '^sshpass -p'
+    line: 'sshpass -p "{{ so_ssh_password }}" ssh-copy-id -i "$KEY".pub $SSH_USERNAME@$SERVERNAME'
+
+- name: Create .ssh directory
+  file:
+    path: /home/{{ so_ssh_username }}/.ssh
+    state: directory
+    mode: 0755
+    owner: '{{ so_ssh_username }}'
+    group: '{{ so_ssh_username }}'
+
+- name: Create .ssh directory in /root/.ssh
+  file:
+    path: /root/.ssh
+    state: directory
+    mode: 0755
+
+- name: Ensure known_hosts file exists in 
+  copy:
+    content: ""
+    dest: /root/.ssh/know_hosts
+    force: no
+    mode: 0755
+  register: file_created_result
+
+- name: Keyscan the master server
+  shell: ssh-keyscan -H 192.168.2.2 >> ~/.ssh/known_hosts
+  when: file_created_result.changed
+
+- name: Launch Security Onion setup
+  shell: sosetup -f /home/amfids/sosetup.conf -y
+  when: file_created_result.changed

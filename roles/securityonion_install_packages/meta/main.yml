@@ -1,0 +1,4 @@
+---
+dependencies:
+  - { role: securityonion_prerequisites }
+  - { role: ubuntu_update }

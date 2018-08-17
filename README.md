@@ -1,0 +1,1 @@
+Make sure to edit the sosetup config files to enable/disable anything you need, and do not forget to set the SSH_USERNAME entry.

@@ -1,0 +1,23 @@
+---
+- name: Configure MySQL not to prompt for root password
+  debconf:
+    name: debconf
+    question: debconf/frontend
+    value: noninteractive
+    vtype: select
+    
+- name: Install software-properties-common
+  apt:
+    name: software-properties-common
+    state: present
+
+- name: Install sshpass
+  apt:
+    name: sshpass
+    state: present
+  no_log: True
+
+- name: Add Security Onion Repository
+  apt_repository:
+    repo: ppa:securityonion/stable
+    state: present

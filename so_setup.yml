@@ -1,0 +1,15 @@
+--- 
+- name: Install Security Onion
+  hosts: all
+  become: yes
+  gather_facts: no
+
+  vars_prompt:
+  - name: 'so_ssh_username'
+    prompt: 'SSH username for SecurityOnion'
+  - name: 'so_ssh_password'
+    prompt: 'SSH password for SecurityOnion'
+    private: yes
+
+  roles:
+    - securityonion_setup

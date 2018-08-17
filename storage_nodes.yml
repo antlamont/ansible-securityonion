@@ -1,0 +1,21 @@
+--- 
+- name: Update Ubuntu
+  hosts: all
+  become: yes
+  gather_facts: no
+  roles:
+    - ubuntu_update
+    
+- name: Install Security Onion Packages
+  hosts: all
+  become: yes
+  gather_facts: no
+  roles:
+    - securityonion_install_packages
+
+- name: Update Security Onion
+  hosts: all
+  become: yes
+  gather_facts: no
+  roles:
+    - securityonion_update
